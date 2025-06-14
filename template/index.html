@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartpletude - Mise en relation professeurs et étudiants</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>smartpletude</h1>
+            <nav>
+                <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('professeurs') }}">Professeurs</a>
+                <a href="{{ url_for('etudiants') }}">Étudiants</a>
+            </nav>
+            <div class="header-actions">
+                {% if current_user %}
+                    <span>Bonjour {{ current_user.prenom }}!</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Connexion</a>
+                    <a href="{{ url_for('register') }}" class="btn">Inscription</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <!-- Hero Section -->
+            <section class="hero fade-in">
+                <h2>Bienvenue sur smartpletude</h2>
+                <p>La plateforme qui connecte les étudiants avec des professeurs qualifiés.</p>
+                
+                {% if not current_user %}
+                    <div style="margin-top: 2rem;">
+                        <a href="{{ url_for('register') }}" class="btn" style="margin-right: 1rem;">Créer un compte</a>
+                        <a href="{{ url_for('professeurs') }}" class="btn btn-secondary">Découvrir les professeurs</a>
+                    </div>
+                {% else %}
+                    <p>Bienvenue {{ current_user.prenom }}! Vous êtes connecté en tant que {{ current_user.user_type }}.</p>
+                    <div style="margin-top: 2rem;">
+                        {% if current_user.user_type == 'etudiant' %}
+                            <a href="{{ url_for('professeurs') }}" class="btn">Trouver un professeur</a>
+                        {% else %}
+                            <a href="{{ url_for('etudiants') }}" class="btn">Voir les étudiants</a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </section>
+
+            <!-- Info Grid -->
+            <div class="info-grid">
+                <div class="info-section">
+                    <h3>Pour les Étudiants</h3>
+                    <p>Trouvez le professeur parfait pour vos besoins d'apprentissage. Parcourez les profils, consultez les spécialités et connectez-vous avec des enseignants qualifiés.</p>
+                    <a href="{{ url_for('etudiants') }}" class="btn">En savoir plus</a>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Pour les Professeurs</h3>
+                    <p>Partagez votre expertise et aidez les étudiants à réussir. Créez votre profil, définissez vos disponibilités et commencez à enseigner.</p>
+                    <a href="{{ url_for('professeurs') }}" class="btn">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Auto-hide flash messages after 5 seconds
+        setTimeout(function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(msg) {
+                msg.style.animation = 'fadeOut 0.5s ease-out forwards';
+                setTimeout(function() {
+                    msg.remove();
+                }, 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>

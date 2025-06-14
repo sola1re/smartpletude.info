@@ -1,0 +1,26 @@
+<!-- professeurs.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des professeurs</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Nos Professeurs</h1>
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="/professeurs">Professeurs</a>
+            <a href="/etudiants">Étudiants</a>
+        </nav>
+    </header>
+    <main>
+        <ul>
+            {% for prof in professeurs %}
+                <li>{{ prof.nom }} — {{ prof.matiere }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>

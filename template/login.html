@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Smartpletude</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Smartpletude</h1>
+            <nav>
+                <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('professeurs') }}">Professeurs</a>
+                <a href="{{ url_for('etudiants') }}">Étudiants</a>
+            </nav>
+            <div class="header-actions">
+                <a href="{{ url_for('register') }}">Inscription</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="form-container fade-in">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #2c3e50;">Se connecter</h2>
+                
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="form-group">
+                        {{ form.email.label(class="form-label") }}
+                        {{ form.email(class="form-control", placeholder="votre@email.com") }}
+                        {% if form.email.errors %}
+                            <div style="color: #e74c3c; font-size: 0.9rem; margin-top: 0.5rem;">
+                                {% for error in form.email.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", placeholder="Votre mot de passe") }}
+                        {% if form.password.errors %}
+                            <div style="color: #e74c3c; font-size: 0.9rem; margin-top: 0.5rem;">
+                                {% for error in form.password.errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <p style="color: #7f8c8d;">Vous n'avez pas encore de compte ?</p>
+                    <a href="{{ url_for('register') }}" style="color: #3498db; text-decoration: none; font-weight: 500;">Créer un compte</a>
+                </div>
+                
+                <div style="text-align: center; margin-top: 1rem;">
+                    <a href="#" style="color: #95a5a6; text-decoration: none; font-size: 0.9rem;">Mot de passe oublié ?</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Smartpletude. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+</html>
