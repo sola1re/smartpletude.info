@@ -145,6 +145,9 @@ def professeurs():
     if not current_user:
         flash('Vous devez être connecté pour accéder à cette page.', 'error')
         return redirect(url_for('login'))
+    if current_user.user_type != 'professeur':
+        flash('Accès réservé aux professeurs.', 'error')
+        return redirect(url_for('home'))
     return render_template('professeurs.html', current_user=current_user)
 
 @app.route('/etudiants')
@@ -153,6 +156,9 @@ def etudiants():
     if not current_user:
         flash('Vous devez être connecté pour accéder à cette page.', 'error')
         return redirect(url_for('login'))
+    if current_user.user_type != 'etudiant':
+        flash('Accès réservé aux étudiants.', 'error')
+        return redirect(url_for('home'))
     return render_template('etudiants.html', current_user=current_user)
 
 # Gestionnaire d'erreurs

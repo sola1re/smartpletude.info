@@ -114,13 +114,7 @@ Après avoir initialisé la base avec `db.py` :
 ```bash
 python db.py
 ```
-
-Menu interactif avec options :
-- **1** : Initialiser la base de données
-- **2** : Créer des utilisateurs de test
-- **3** : Afficher les statistiques
-- **4** : Remise à zéro complète
-- **5** : Quitter
+Menu interactif pour gérer la bdd
 
 ## 📁 Structure du projet
 

@@ -7,6 +7,8 @@ Ce script initialise la base de données et peut créer des utilisateurs de test
 import os
 import sys
 from datetime import datetime
+from sqlalchemy import inspect
+
 
 # Ajouter le répertoire parent au path pour importer app
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +29,7 @@ def init_database():
         print("✅ Tables créées avec succès")
         
         # Vérifier que les tables ont été créées
-        tables = db.engine.table_names()
+        tables = inspect(db.engine).get_table_names()
         print(f"📊 Tables créées: {', '.join(tables)}")
 
 def create_test_users():
