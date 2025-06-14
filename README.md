@@ -158,25 +158,6 @@ CREATE TABLE user (
 );
 ```
 
-### Migration vers PostgreSQL (optionnel)
-Pour passer à PostgreSQL en production :
-
-1. **Installer psycopg2**
-```bash
-pip install psycopg2-binary
-```
-
-2. **Configurer DATABASE_URL**
-```bash
-# Dans .env
-DATABASE_URL=postgresql://username:password@localhost/smartpletude
-```
-
-3. **Réinitialiser la base**
-```bash
-python db.py  # Option 4 pour reset
-```
-
 ## 🔒 Sécurité
 
 ### Mesures implémentées
