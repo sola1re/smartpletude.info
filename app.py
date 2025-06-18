@@ -6,15 +6,21 @@ from wtforms import StringField, PasswordField, SelectField, SubmitField, Boolea
 from wtforms.validators import DataRequired, Email, Length, EqualTo
 import os
 import secrets
-from datetime import datetime
+from datetime import datetime, timedelta
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # Initialize Flask app
 app = Flask(__name__, template_folder='template')
+app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
 # Configuration simplifiée
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(32))
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///smartpletude.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
+app.config['SESSION_COOKIE_SECURE'] = True      # Active le cookie uniquement en HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True    # Empêche l'accès via JS
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'   # Protège contre le CSRF (Lax est un bon compromis)
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -72,6 +78,19 @@ def home():
     current_user = get_current_user()
     return render_template('index.html', current_user=current_user)
 
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    if app.debug:
+        return f"<pre>{error}</pre>", 500
+    return render_template('500.html'), 500
+
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if is_logged_in():
@@ -79,7 +98,11 @@ def register():
     
     form = RegistrationForm()
     if form.validate_on_submit():
-        # Vérifier si l'utilisateur existe déjà
+    # Vérification explicite du type d'utilisateur
+        if form.user_type.data not in ['etudiant', 'professeur']:
+            flash("Type d'utilisateur invalide.", 'error')
+            return render_template('register.html', form=form)
+
         existing_user = User.query.filter_by(email=form.email.data.lower()).first()
         if existing_user:
             flash('Un compte avec cet email existe déjà.', 'error')
@@ -118,6 +141,7 @@ def login():
         user = User.query.filter_by(email=form.email.data.lower().strip()).first()
         
         if user and bcrypt.check_password_hash(user.password_hash, form.password.data):
+            session.clear()
             session['user_id'] = user.id
             session.permanent = form.remember_me.data
             
@@ -179,4 +203,5 @@ def init_db():
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True, host='127.0.0.1', port=5000)
+    debug_mode = os.environ.get('FLASK_DEBUG', '0') == '1'
+    app.run(debug=debug_mode, host='127.0.0.1', port=5000)
