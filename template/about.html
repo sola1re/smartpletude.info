@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - Smartpletude</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Smartpletude</a></h1>
+            <nav>
+                <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('search') }}" class="active">Recherche</a>
+                <a href="{{ url_for('professeurs') }}">Professeurs</a>
+                <a href="{{ url_for('etudiants') }}">Étudiants</a>
+                <a href="{{ url_for('about') }}">À propos</a>
+            </nav>
+            <div class="header-actions">
+                {% if current_user %}
+                    <span>Bonjour {{ current_user.prenom }}!</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Connexion</a>
+                    <a href="{{ url_for('register') }}" class="btn">Inscription</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="about-page">
+                <!-- Hero Section -->
+                <section class="about-hero">
+                    <h1>À propos de smartpletude</h1>
+                    <p class="hero-subtitle">Révolutionner l'éducation grâce à la technologie et la passion d'enseigner</p>
+                </section>
+
+                <!-- Notre Mission -->
+                <section class="mission-section">
+                    <div class="content-grid">
+                        <div class="text-content">
+                            <h2>Notre Mission</h2>
+                            <p>Chez smartpletude, nous croyons fermement que chaque étudiant mérite d'avoir accès à un enseignement de qualité, personnalisé et adapté à ses besoins spécifiques. Notre mission est de démocratiser l'accès à l'éducation en créant des ponts entre les étudiants motivés et les professeurs passionnés.</p>
+                            
+                            <p>Nous œuvrons pour créer un écosystème éducatif où la technologie sert l'humain, où la distance n'est plus un obstacle et où chaque interaction pédagogique peut transformer une vie.</p>
+                        </div>
+                        <div class="icon-content">
+                            <div class="mission-icon">🎯</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Nos Valeurs -->
+                <section class="values-section">
+                    <h2>Nos Valeurs</h2>
+                    <div class="values-grid">
+                        <div class="value-card">
+                            <div class="value-icon">🌟</div>
+                            <h3>Excellence</h3>
+                            <p>Nous nous engageons à offrir une plateforme de qualité supérieure avec des professeurs rigoureusement sélectionnés et des outils pédagogiques innovants.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">🤝</div>
+                            <h3>Bienveillance</h3>
+                            <p>Nous créons un environnement d'apprentissage sûr et bienveillant où chaque étudiant peut s'épanouir sans jugement.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">🚀</div>
+                            <h3>Innovation</h3>
+                            <p>Nous innovons constamment pour améliorer l'expérience d'apprentissage et rendre l'éducation plus accessible et efficace.</p>
+                        </div>
+                        
+                        <div class="value-card">
+                            <div class="value-icon">⚖️</div>
+                            <h3>Équité</h3>
+                            <p>Nous œuvrons pour une éducation équitable, accessible à tous, indépendamment du background socio-économique.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notre Histoire -->
+                <section class="story-section">
+                    <div class="content-grid reverse">
+                        <div class="icon-content">
+                            <div class="story-icon">📚</div>
+                        </div>
+                        <div class="text-content">
+                            <h2>Notre Histoire</h2>
+                            <p>smartpletude est né d'une constatation simple mais préoccupante : trop d'étudiants brillants abandonnent leurs rêves faute d'un accompagnement pédagogique adapté, tandis que de nombreux professeurs talentueux peinent à partager leur expertise.</p>
+                            
+                            <p>Fondée en 2024 par une équipe passionnée d'éducation et de technologie, smartpletude s'est donnée pour mission de résoudre cette équation en créant une plateforme intuitive, sécurisée et efficace.</p>
+                            
+                            <p>Aujourd'hui, nous sommes fiers de compter des centaines de professeurs qualifiés et des milliers d'étudiants qui ont trouvé leur voie grâce à notre plateforme.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ce qui nous rend uniques -->
+                <section class="unique-section">
+                    <h2>Ce qui nous rend uniques</h2>
+                    <div class="unique-grid">
+                        <div class="unique-item">
+                            <h4>🎭 Approche personnalisée</h4>
+                            <p>Chaque étudiant est unique. Nos professeurs adaptent leur méthode d'enseignement aux besoins spécifiques de chaque apprenant.</p>
+                        </div>
+                        
+                        <div class="unique-item">
+                            <h4>🔒 Sécurité garantie</h4>
+                            <p>Votre sécurité et celle de vos données sont notre priorité absolue. Notre plateforme respecte les plus hauts standards de sécurité.</p>
+                        </div>
+                        
+                        <div class="unique-item">
+                            <h4>⚡ Technologie de pointe</h4>
+                            <p>Nous utilisons les dernières technologies pour offrir une expérience utilisateur fluide et intuitive.</p>
+                        </div>
+                        
+                        <div class="unique-item">
+                            <h4>💡 Innovation pédagogique</h4>
+                            <p>Nous intégrons les dernières recherches en sciences de l'éducation pour optimiser l'apprentissage.</p>
+                        </div>
+                        
+                        <div class="unique-item">
+                            <h4>🌍 Accessibilité globale</h4>
+                            <p>Que vous soyez en ville ou en zone rurale, accédez aux meilleurs professeurs depuis chez vous.</p>
+                        </div>
+                        
+                        <div class="unique-item">
+                            <h4>💰 Tarifs équitables</h4>
+                            <p>Nous proposons des tarifs transparents et équitables pour rendre l'éducation de qualité accessible à tous.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notre Impact -->
+                <section class="impact-section">
+                    <h2>Notre Impact</h2>
+                    <div class="impact-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Professeurs qualifiés</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">2000+</div>
+                            <div class="stat-label">Étudiants accompagnés</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">15000+</div>
+                            <div class="stat-label">Heures de cours dispensées</div>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <div class="stat-number">95%</div>
+                            <div class="stat-label">Taux de satisfaction</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Call to Action -->
+                <section class="cta-section">
+                    <h2>Rejoignez la révolution éducative</h2>
+                    <p>Que vous soyez étudiant en quête d'excellence ou professeur passionné par la transmission du savoir, smartpletude vous offre les outils pour réussir.</p>
+                    <div class="cta-buttons">
+                        {% if not current_user %}
+                            <a href="{{ url_for('register') }}" class="btn btn-primary">Rejoindre smartpletude</a>
+                            <a href="{{ url_for('search') }}" class="btn btn-secondary">Découvrir nos cours</a>
+                        {% else %}
+                            <a href="{{ url_for('search') }}" class="btn btn-primary">Découvrir nos cours</a>
+                            {% if current_user.user_type == 'etudiant' %}
+                                <a href="{{ url_for('professeurs') }}" class="btn btn-secondary">Trouver un professeur</a>
+                            {% else %}
+                                <a href="{{ url_for('etudiants') }}" class="btn btn-secondary">Voir les étudiants</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

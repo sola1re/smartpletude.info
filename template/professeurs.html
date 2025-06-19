@@ -4,16 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des professeurs</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header>
-        <h1>Nos Professeurs</h1>
-        <nav>
-            <a href="/">Accueil</a>
-            <a href="/professeurs">Professeurs</a>
-            <a href="/etudiants">Étudiants</a>
-        </nav>
+        <div class="container">
+            <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Smartpletude</a></h1>
+            <nav>
+                <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('search') }}" class="active">Recherche</a>
+                <a href="{{ url_for('professeurs') }}">Professeurs</a>
+                <a href="{{ url_for('etudiants') }}">Étudiants</a>
+                <a href="{{ url_for('about') }}">À propos</a>
+            </nav>
+            <div class="header-actions">
+                {% if current_user %}
+                    <span>Bonjour {{ current_user.prenom }}!</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Connexion</a>
+                    <a href="{{ url_for('register') }}" class="btn">Inscription</a>
+                {% endif %}
+            </div>
+        </div>
     </header>
     <main>
         <p>Cette page est dédiée aux professeurs. Ici, vous pourrez :</p>
@@ -23,5 +36,10 @@
             <li>- Gérer votre dossier</li>
         </ul>
     </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Smartpletude. Tous droits réservés.</p>
+        </div>
+    </footer>
 </body>
 </html>

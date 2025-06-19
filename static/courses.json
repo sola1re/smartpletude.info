@@ -1,0 +1,224 @@
+{
+  "courses": [
+    {
+      "id": "math_001",
+      "title": "Mathématiques - Niveau Lycée",
+      "description": "Cours de maths pour terminale : analyse, géométrie, probabilités. Préparation au baccalauréat avec exercices corrigés et méthodes éprouvées.",
+      "subject": "Mathématiques",
+      "level": "Lycée",
+      "professor": "Dr. Martin Dubois",
+      "duration": "1h30",
+      "price": "25€/h",
+      "keywords": ["maths", "mathématiques", "analyse", "géométrie", "probabilités", "terminale", "lycée", "bac"]
+    },
+    {
+      "id": "math_002",
+      "title": "Mathématiques Supérieures - Prépa",
+      "description": "Cours intensifs de mathématiques pour classes préparatoires : algèbre linéaire, analyse réelle, géométrie différentielle.",
+      "subject": "Mathématiques",
+      "level": "Supérieur",
+      "professor": "Prof. Claire Rousseau",
+      "duration": "2h",
+      "price": "40€/h",
+      "keywords": ["maths", "mathématiques", "prépa", "supérieur", "algèbre", "analyse", "géométrie", "différentielle"]
+    },
+    {
+      "id": "fr_001",
+      "title": "Français - Préparation Bac",
+      "description": "Aide pour la préparation du bac français : dissertation, commentaire composé, oral. Méthodologie et entraînement intensif.",
+      "subject": "Français",
+      "level": "Lycée",
+      "professor": "Mme. Sophie Laurent",
+      "duration": "2h",
+      "price": "30€/h",
+      "keywords": ["français", "bac", "dissertation", "commentaire", "littérature", "lycée", "oral", "écrit"]
+    },
+    {
+      "id": "fr_002",
+      "title": "Français - Soutien Collège",
+      "description": "Remise à niveau en français pour collégiens : grammaire, orthographe, expression écrite et orale.",
+      "subject": "Français",
+      "level": "Collège",
+      "professor": "M. Jean Moreau",
+      "duration": "1h30",
+      "price": "22€/h",
+      "keywords": ["français", "collège", "grammaire", "orthographe", "expression", "soutien", "remise à niveau"]
+    },
+    {
+      "id": "phys_001",
+      "title": "Physique-Chimie - Collège/Lycée",
+      "description": "Cours de physique-chimie tous niveaux : mécanique, thermodynamique, chimie organique. Expériences et exercices pratiques.",
+      "subject": "Physique-Chimie",
+      "level": "Collège/Lycée",
+      "professor": "M. Pierre Moreau",
+      "duration": "1h30",
+      "price": "28€/h",
+      "keywords": ["physique", "chimie", "mécanique", "thermodynamique", "organique", "collège", "lycée", "expériences"]
+    },
+    {
+      "id": "phys_002",
+      "title": "Physique Quantique - Niveau Université",
+      "description": "Introduction à la physique quantique : principes fondamentaux, équation de Schrödinger, applications modernes.",
+      "subject": "Physique",
+      "level": "Université",
+      "professor": "Dr. Élise Bertrand",
+      "duration": "2h",
+      "price": "45€/h",
+      "keywords": ["physique", "quantique", "université", "schrödinger", "moderne", "fondamentaux"]
+    },
+    {
+      "id": "ang_001",
+      "title": "Anglais - Conversation et Grammaire",
+      "description": "Perfectionnement en anglais : conversation, grammaire, préparation TOEIC. Méthode immersive avec natif anglophone.",
+      "subject": "Anglais",
+      "level": "Tous niveaux",
+      "professor": "Mme. Jennifer Smith",
+      "duration": "1h",
+      "price": "22€/h",
+      "keywords": ["anglais", "conversation", "grammaire", "toeic", "oral", "écrit", "natif", "immersif"]
+    },
+    {
+      "id": "ang_002",
+      "title": "Anglais Business - Niveau Professionnel",
+      "description": "Anglais des affaires pour professionnels : correspondance, négociation, présentations. Préparation TOEFL et certifications.",
+      "subject": "Anglais",
+      "level": "Professionnel",
+      "professor": "Mr. David Thompson",
+      "duration": "1h30",
+      "price": "35€/h",
+      "keywords": ["anglais", "business", "professionnel", "affaires", "toefl", "négociation", "présentations"]
+    },
+    {
+      "id": "esp_001",
+      "title": "Espagnol - Débutant à Intermédiaire",
+      "description": "Apprentissage de l'espagnol : bases grammaticales, vocabulaire, culture hispanique. Cours ludiques et interactifs.",
+      "subject": "Espagnol",
+      "level": "Débutant/Intermédiaire",
+      "professor": "Mme. Carmen Rodriguez",
+      "duration": "1h30",
+      "price": "20€/h",
+      "keywords": ["espagnol", "débutant", "intermédiaire", "grammaire", "vocabulaire", "culture", "hispanique"]
+    },
+    {
+      "id": "hist_001",
+      "title": "Histoire - Préparation Bac",
+      "description": "Histoire contemporaine et moderne : guerres mondiales, révolutions, construction européenne. Méthodologie dissertation.",
+      "subject": "Histoire",
+      "level": "Lycée",
+      "professor": "M. François Durand",
+      "duration": "2h",
+      "price": "26€/h",
+      "keywords": ["histoire", "bac", "contemporaine", "moderne", "guerres", "révolutions", "europe", "dissertation"]
+    },
+    {
+      "id": "geo_001",
+      "title": "Géographie - Monde Contemporain",
+      "description": "Géographie humaine et physique : mondialisation, environnement, démographie. Analyse de cartes et documents.",
+      "subject": "Géographie",
+      "level": "Lycée/Supérieur",
+      "professor": "Mme. Isabelle Martin",
+      "duration": "1h30",
+      "price": "24€/h",
+      "keywords": ["géographie", "mondialisation", "environnement", "démographie", "cartes", "contemporain"]
+    },
+    {
+      "id": "eco_001",
+      "title": "Économie - SES Terminale",
+      "description": "Sciences économiques et sociales : microéconomie, macroéconomie, sociologie. Préparation spé SES au baccalauréat.",
+      "subject": "Économie",
+      "level": "Lycée",
+      "professor": "M. Alexandre Petit",
+      "duration": "2h",
+      "price": "32€/h",
+      "keywords": ["économie", "ses", "terminale", "microéconomie", "macroéconomie", "sociologie", "bac"]
+    },
+    {
+      "id": "bio_001",
+      "title": "Biologie - Collège et Lycée",
+      "description": "Sciences de la vie et de la Terre : génétique, écologie, évolution. Préparation aux examens avec travaux pratiques.",
+      "subject": "Biologie",
+      "level": "Collège/Lycée",
+      "professor": "Dr. Marie Leblanc",
+      "duration": "1h30",
+      "price": "27€/h",
+      "keywords": ["biologie", "svt", "génétique", "écologie", "évolution", "collège", "lycée", "tp"]
+    },
+    {
+      "id": "info_001",
+      "title": "Informatique - Programmation Python",
+      "description": "Initiation à la programmation en Python : bases du langage, algorithmique, projets pratiques. Idéal débutants.",
+      "subject": "Informatique",
+      "level": "Débutant/Intermédiaire",
+      "professor": "M. Thomas Bernard",
+      "duration": "2h",
+      "price": "30€/h",
+      "keywords": ["informatique", "programmation", "python", "algorithmique", "débutant", "projets", "code"]
+    },
+    {
+      "id": "info_002",
+      "title": "Informatique - Développement Web",
+      "description": "Création de sites web : HTML, CSS, JavaScript, frameworks modernes. Portfolio et projets concrets.",
+      "subject": "Informatique",
+      "level": "Intermédiaire/Avancé",
+      "professor": "Mme. Laura Garnier",
+      "duration": "2h30",
+      "price": "38€/h",
+      "keywords": ["informatique", "web", "html", "css", "javascript", "frameworks", "portfolio", "sites"]
+    },
+    {
+      "id": "philo_001",
+      "title": "Philosophie - Terminale",
+      "description": "Préparation au bac philo : dissertation, explication de texte, grands auteurs. Méthode et entraînement régulier.",
+      "subject": "Philosophie",
+      "level": "Lycée",
+      "professor": "M. Julien Moreau",
+      "duration": "2h",
+      "price": "28€/h",
+      "keywords": ["philosophie", "terminale", "bac", "dissertation", "auteurs", "texte", "méthode"]
+    },
+    {
+      "id": "all_001",
+      "title": "Allemand - Tous Niveaux",
+      "description": "Cours d'allemand personnalisés : grammaire, conversation, culture germanique. Préparation certifications Goethe.",
+      "subject": "Allemand",
+      "level": "Tous niveaux",
+      "professor": "Mme. Ingrid Mueller",
+      "duration": "1h30",
+      "price": "25€/h",
+      "keywords": ["allemand", "grammaire", "conversation", "culture", "goethe", "certification", "germanique"]
+    },
+    {
+      "id": "ital_001",
+      "title": "Italien - Débutant",
+      "description": "Découverte de l'italien : prononciation, vocabulaire de base, culture italienne. Apprentissage dans la bonne humeur.",
+      "subject": "Italien",
+      "level": "Débutant",
+      "professor": "Mme. Francesca Rossi",
+      "duration": "1h",
+      "price": "18€/h",
+      "keywords": ["italien", "débutant", "prononciation", "vocabulaire", "culture", "italienne", "base"]
+    },
+    {
+      "id": "latin_001",
+      "title": "Latin - Collège et Lycée",
+      "description": "Initiation au latin : déclinaisons, conjugaisons, textes classiques. Aide aux devoirs et préparation examens.",
+      "subject": "Latin",
+      "level": "Collège/Lycée",
+      "professor": "M. Antoine Lefèvre",
+      "duration": "1h30",
+      "price": "24€/h",
+      "keywords": ["latin", "déclinaisons", "conjugaisons", "classiques", "collège", "lycée", "examens"]
+    },
+    {
+      "id": "music_001",
+      "title": "Musique - Solfège et Piano",
+      "description": "Cours de solfège et piano pour débutants : lecture de notes, rythme, morceaux simples. Approche progressive.",
+      "subject": "Musique",
+      "level": "Débutant",
+      "professor": "Mme. Céline Dupont",
+      "duration": "1h",
+      "price": "20€/h",
+      "keywords": ["musique", "solfège", "piano", "débutant", "notes", "rythme", "morceaux", "progressif"]
+    }
+  ]
+}

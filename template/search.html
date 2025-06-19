@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche de cours - Smartpletude</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Smartpletude</a></h1>
+            <nav>
+                <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('search') }}" class="active">Recherche</a>
+                <a href="{{ url_for('professeurs') }}">Professeurs</a>
+                <a href="{{ url_for('etudiants') }}">Étudiants</a>
+                <a href="{{ url_for('about') }}">À propos</a>
+            </nav>
+            <div class="header-actions">
+                {% if current_user %}
+                    <span>Bonjour {{ current_user.prenom }}!</span>
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Déconnexion</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn">Connexion</a>
+                    <a href="{{ url_for('register') }}" class="btn">Inscription</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="search-page">
+                <h2>Recherche de cours</h2>
+                
+                <!-- Search Form -->
+                <div class="search-container">
+                    <form method="POST" class="search-form">
+                        {{ form.hidden_tag() }}
+                        <div class="search-box">
+                            {{ form.query(class="search-input", placeholder="Rechercher un cours (ex: maths, français, python...)") }}
+                            {{ form.submit(class="search-btn") }}
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Search Results -->
+                {% if query %}
+                    <div class="search-results">
+                        <h3>Résultats pour "{{ query }}"</h3>
+                        
+                        {% if courses %}
+                            <p class="results-count">{{ courses|length }} cours trouvé(s)</p>
+                            
+                            <div class="courses-grid">
+                                {% for course in courses %}
+                                    <div class="course-card">
+                                        <div class="course-header">
+                                            <h4>{{ course.title }}</h4>
+                                            <span class="course-level">{{ course.level }}</span>
+                                        </div>
+                                        <div class="course-info">
+                                            <p class="course-subject">{{ course.subject }}</p>
+                                            <p class="course-description">{{ course.description }}</p>
+                                            <div class="course-details">
+                                                <span class="course-professor">👨‍🏫 {{ course.professor }}</span>
+                                                <span class="course-duration">⏱️ {{ course.duration }}</span>
+                                                <span class="course-price">💰 {{ course.price }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="course-actions">
+                                            {% if current_user %}
+                                                {% if current_user.user_type == 'etudiant' %}
+                                                    <button class="btn btn-primary" onclick="contactProfessor('{{ course.professor }}')">
+                                                        Contacter le professeur
+                                                    </button>
+                                                {% else %}
+                                                    <button class="btn btn-secondary" disabled>
+                                                        Réservé aux étudiants
+                                                    </button>
+                                                {% endif %}
+                                            {% else %}
+                                                <a href="{{ url_for('register') }}" class="btn btn-primary">
+                                                    S'inscrire pour contacter
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="no-results">
+                                <p>Aucun cours trouvé pour votre recherche.</p>
+                                <p>Suggestions :</p>
+                                <ul>
+                                    <li>Essayez des mots-clés plus généraux (ex: "maths" au lieu de "mathématiques appliquées")</li>
+                                    <li>Vérifiez l'orthographe</li>
+                                    <li>Recherchez par matière : français, anglais, maths, physique, informatique</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <!-- Suggestions when no search -->
+                    <div class="search-suggestions">
+                        <h3>Matières populaires</h3>
+                        <div class="subjects-tags">
+                            <a href="?q=maths" class="subject-tag">Mathématiques</a>
+                            <a href="?q=français" class="subject-tag">Français</a>
+                            <a href="?q=anglais" class="subject-tag">Anglais</a>
+                            <a href="?q=physique" class="subject-tag">Physique</a>
+                            <a href="?q=informatique" class="subject-tag">Informatique</a>
+                            <a href="?q=histoire" class="subject-tag">Histoire</a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>

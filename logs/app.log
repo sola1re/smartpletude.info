@@ -1,0 +1,9 @@
+2025-06-19 20:58:34,984 - INFO - Application démarrée
+2025-06-19 20:59:12,478 - INFO - Connexion réussie : caca@ca.ca (etudiant)
+2025-06-19 21:07:11,893 - INFO - Application démarrée
+2025-06-19 21:16:17,664 - INFO - Application démarrée
+2025-06-19 21:17:04,115 - INFO - Nouvel utilisateur inscrit : 123456@a.com (etudiant)
+2025-06-19 21:17:17,134 - WARNING - Tentative de connexion échouée pour l'email : 123@a.com
+2025-06-19 21:17:34,667 - INFO - Connexion réussie : 123456@a.com (etudiant)
+2025-06-19 21:17:34,682 - INFO - Page /etudiants visitée par : 123456@a.com
+2025-06-19 21:17:59,351 - WARNING - Utilisateur non autorisé (123456@a.com) a tenté d'accéder à /professeurs.

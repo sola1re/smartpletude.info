@@ -9,11 +9,13 @@
 <body>
     <header>
         <div class="container">
-            <h1>smartpletude</h1>
+            <h1><a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Smartpletude</a></h1>
             <nav>
                 <a href="{{ url_for('home') }}">Accueil</a>
+                <a href="{{ url_for('search') }}" class="active">Recherche</a>
                 <a href="{{ url_for('professeurs') }}">Professeurs</a>
                 <a href="{{ url_for('etudiants') }}">Étudiants</a>
+                <a href="{{ url_for('about') }}">À propos</a>
             </nav>
             <div class="header-actions">
                 {% if current_user %}
@@ -46,6 +48,17 @@
             <section class="hero fade-in">
                 <h2>Bienvenue sur smartpletude</h2>
                 <p>La plateforme qui connecte les étudiants avec des professeurs qualifiés.</p>
+                
+                <form method="POST" action="{{ url_for('search') }}" class="search-form">
+                    {{ search_form.hidden_tag() }}
+                    <label for="search-input" class="visually-hidden">Rechercher un cours</label>
+                    <div class="search-bar">
+                        <input type="text" id="search-input" name="query" placeholder="Rechercher un cours (ex: maths)">
+                        <button type="submit">🔍</button>
+                    </div>
+                </form>
+
+
                 
                 {% if not current_user %}
                     <div style="margin-top: 2rem;">
@@ -80,6 +93,11 @@
             </div>
         </div>
     </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Smartpletude. Tous droits réservés.</p>
+        </div>
+    </footer>
 
     <script>
         // Auto-hide flash messages after 5 seconds

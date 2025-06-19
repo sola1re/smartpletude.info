@@ -1,0 +1,12 @@
+{
+  "courses": [
+    {
+      "id": "math_001",
+      "title": "Mathématiques - Niveau Lycée",
+      "description": "Cours de maths pour terminale : analyse, géométrie, probabilités",
+      "subject": "Mathématiques",
+      "level": "Lycée",
+      "professor": "Dr. Martin Dubois",
+      "duration": "1h30",
+      "price": "25€/h",
+      "keywords": 
