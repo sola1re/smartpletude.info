@@ -14,6 +14,8 @@ import unicodedata
 import logging
 import bleach
 from wtforms.validators import Regexp
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__, template_folder='template')
