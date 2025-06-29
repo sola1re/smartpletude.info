@@ -25,7 +25,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 # Configuration simplifiée
 PORT = int(os.environ.get('PORT', 8080))
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', secrets.token_hex(32))
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///smartpletude.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 app.config['SESSION_COOKIE_SECURE'] = True
@@ -381,8 +381,13 @@ def internal_error(error):
 # Initialisation de la base de données
 def init_db():
     with app.app_context():
-        db.create_all()
-        print("Base de données initialisée avec succès!")
+        try:
+            db.create_all()
+            print("Base de données PostgreSQL initialisée avec succès !")
+        except Exception as e:
+            app.logger.error(f"Erreur lors de l'initialisation de la BDD : {e}")
+            print("Échec de l'initialisation de la base de données.")
+
 
 if __name__ == '__main__':
     init_db()

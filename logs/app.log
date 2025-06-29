@@ -1,9 +1,12 @@
-2025-06-19 20:58:34,984 - INFO - Application démarrée
-2025-06-19 20:59:12,478 - INFO - Connexion réussie : caca@ca.ca (etudiant)
-2025-06-19 21:07:11,893 - INFO - Application démarrée
-2025-06-19 21:16:17,664 - INFO - Application démarrée
-2025-06-19 21:17:04,115 - INFO - Nouvel utilisateur inscrit : 123456@a.com (etudiant)
-2025-06-19 21:17:17,134 - WARNING - Tentative de connexion échouée pour l'email : 123@a.com
-2025-06-19 21:17:34,667 - INFO - Connexion réussie : 123456@a.com (etudiant)
-2025-06-19 21:17:34,682 - INFO - Page /etudiants visitée par : 123456@a.com
-2025-06-19 21:17:59,351 - WARNING - Utilisateur non autorisé (123456@a.com) a tenté d'accéder à /professeurs.
+--start--2025-06-19 22:20:23,064 - INFO - Application démarrée
+2025-06-19 22:50:27,270 - INFO - Application démarrée
+2025-06-29 09:52:50,648 - INFO - Application démarrée
+2025-06-29 09:52:50,722 - ERROR - Erreur lors de l'initialisation de la BDD : 'utf-8' codec can't decode byte 0xe9 in position 97: invalid continuation byte
+2025-06-29 10:42:41,349 - INFO - Application démarrée
+2025-06-29 10:55:12,682 - INFO - Application démarrée
+2025-06-29 10:57:45,620 - INFO - Application démarrée
+2025-06-29 11:01:48,744 - INFO - Application démarrée
+2025-06-29 11:03:39,696 - INFO - Application démarrée
+2025-06-29 11:07:07,445 - INFO - Application démarrée
+2025-06-29 11:08:06,183 - INFO - Application démarrée
+2025-06-29 11:08:54,784 - INFO - Application démarrée
