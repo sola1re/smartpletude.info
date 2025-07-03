@@ -15,6 +15,7 @@ import logging
 import bleach
 from wtforms.validators import Regexp
 from dotenv import load_dotenv
+from ldap3 import Server, Connection, ALL, NTLM
 load_dotenv()
 
 # Initialize Flask app
@@ -31,6 +32,8 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 app.config['SESSION_COOKIE_SECURE'] = True
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'   # Protège contre le CSRF (Lax est un bon compromis)
+LDAP_SERVER = os.environ.get('LDAP_SERVER')
+LDAP_BASE_DN = os.environ.get('LDAP_BASE_DN')
 
 
 # Initialize extensions
@@ -41,7 +44,7 @@ bcrypt = Bcrypt(app)
 if not os.path.exists('logs'):
     os.makedirs('logs')
 
-file_handler = logging.FileHandler('logs/app.log', encoding='utf-8')
+file_handler = logging.FileHandler('logs/app.log', encoding='utf-8', errors='replace')
 file_handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
@@ -147,6 +150,92 @@ def load_courses():
         print(f"Erreur inconnue lors du chargement des cours : {e}")
         return []
 
+
+
+def ldap_find_user_dn(email):
+    try:
+        server = Server(os.environ.get('LDAP_SERVER'), get_info=ALL)
+        conn = Connection(
+            server,
+            user=os.environ.get('LDAP_BIND_DN'),
+            password=os.environ.get('LDAP_BIND_PASSWORD'),
+            auto_bind=True
+        )
+
+        search_filter = f"(mail={email})"
+        conn.search(
+            search_base=os.environ.get('LDAP_BASE_DN'),
+            search_filter=search_filter,
+            attributes=['distinguishedName', 'cn', 'mail']
+        )
+
+        if conn.entries:
+            user_dn = conn.entries[0].entry_dn
+            app.logger.info(f"DN trouvé pour {email} : {user_dn}")
+            return user_dn
+        else:
+            app.logger.warning(f"Aucun DN trouvé pour {email} en LDAP.")
+            return None
+    except Exception as e:
+        app.logger.warning(f"Erreur lors de la recherche LDAP de l'utilisateur {email} : {e}")
+        return None
+
+
+def ldap_authenticate(user_dn, password):
+    try:
+        server = Server(os.environ.get('LDAP_SERVER'), get_info=ALL)
+        conn = Connection(server, user=user_dn, password=password, auto_bind=True)
+        return conn.bound
+    except Exception as e:
+        app.logger.warning(f"Erreur lors de l'authentification LDAP avec le DN {user_dn} : {e}")
+        return False
+
+def ldap_get_user_info(user_dn):
+    try:
+        server = Server(os.environ.get('LDAP_SERVER'), get_info=ALL)
+        conn = Connection(
+            server,
+            user=os.environ.get('LDAP_BIND_DN'),
+            password=os.environ.get('LDAP_BIND_PASSWORD'),
+            auto_bind=True
+        )
+
+        conn.search(
+            search_base=user_dn,
+            search_filter='(objectClass=person)',
+            attributes=['givenName', 'sn', 'cn']
+        )
+
+        if conn.entries:
+            entry = conn.entries[0]
+
+            nom = entry.sn.value if 'sn' in entry and entry.sn.value else None
+            prenom = entry.givenName.value if 'givenName' in entry and entry.givenName.value else None
+
+            if not nom or not prenom:
+                cn = entry.cn.value if 'cn' in entry else None
+                if cn:
+                    parts = cn.strip().split(' ', 1)
+                    if len(parts) == 2:
+                        prenom = prenom or parts[0]
+                        nom = nom or parts[1]
+                    else:
+                        prenom = prenom or parts[0]
+                        nom = nom or "NomInconnu"
+
+            # Fallback final si toujours rien
+            nom = nom or "NomInconnu"
+            prenom = prenom or "PrenomInconnu"
+
+            app.logger.info(f"Infos LDAP extraites pour {user_dn} → nom: {nom}, prénom: {prenom}")
+            return {'nom': nom, 'prenom': prenom}
+        else:
+            app.logger.warning(f"Aucune entrée LDAP trouvée pour DN: {user_dn}")
+            return {'nom': 'NomInconnu', 'prenom': 'PrenomInconnu'}
+
+    except Exception as e:
+        app.logger.error(f"Erreur extraction infos LDAP pour {user_dn} : {e}")
+        return {'nom': 'NomInconnu', 'prenom': 'PrenomInconnu'}
 
 
 def normalize(text):
@@ -273,8 +362,6 @@ def register():
             password_hash=hashed_password
         )
 
-
-
         try:
             db.session.add(user)
             db.session.commit()
@@ -299,26 +386,97 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         email = bleach.clean(form.email.data.lower().strip())
-        user = User.query.filter_by(email=email).first()
+        password = form.password.data
 
+        app.logger.info(f"Login attempt for email: {email}")
 
-        if user and bcrypt.check_password_hash(user.password_hash, form.password.data):
-            session.clear()
-            session['user_id'] = user.id
-            session.permanent = form.remember_me.data
+        # 1) Recherche DN utilisateur dans LDAP
+        user_dn = ldap_find_user_dn(email)
+        if user_dn:
+            app.logger.info(f"Utilisateur LDAP trouvé : {email} avec DN {user_dn}")
 
-            app.logger.info(f"Connexion réussie : {user.email} ({user.user_type})")
+            # 2) Tente d'authentifier en LDAP avec DN + mot de passe
+            if ldap_authenticate(user_dn, password):
+                app.logger.info(f"Authentification LDAP réussie pour {email}")
 
-            flash(f'Bienvenue {user.prenom}!', 'success')
-            if user.user_type == 'professeur':
-                return redirect(url_for('professeurs'))
+                # 3) Cherche utilisateur localement
+                user = User.query.filter_by(email=email).first()
+
+                # 4) Si utilisateur local n'existe pas, crée-le avec données LDAP basiques
+                if not user:
+                    app.logger.info(f"Utilisateur {email} absent en local, création...")
+                    ldap_info = ldap_get_user_info(user_dn)
+                    nom = ldap_info.get('nom', 'NomInconnu')
+                    prenom = ldap_info.get('prenom', 'PrenomInconnu')
+
+                    # Logique user_type selon email
+                    if email.endswith('@smartpletude.info'):
+                        user_type = 'admin'
+                    else:
+                        user_type = 'professeur'
+
+                    user = User(
+                        email=email,
+                        nom=nom,
+                        prenom=prenom,
+                        user_type=user_type,
+                        password_hash=bcrypt.generate_password_hash(secrets.token_urlsafe(16)).decode('utf-8')  # mdp random car on utilise LDAP
+                    )
+                    try:
+                        db.session.add(user)
+                        db.session.commit()
+                        app.logger.info(f"Utilisateur {email} créé en local avec succès en tant que {user_type}.")
+                    except Exception as e:
+                        db.session.rollback()
+                        app.logger.error(f"Erreur création utilisateur local {email}: {e}")
+                        flash('Erreur lors de la création de votre compte local.', 'error')
+                        return render_template('login.html', form=form)
+
+                # 5) Connexion réussie : session etc
+                session.clear()
+                session['user_id'] = user.id
+                session.permanent = form.remember_me.data
+                flash(f'Bienvenue {user.prenom}!', 'success')
+
+                # Redirection selon type
+                if user.user_type == 'admin':
+                    return redirect(url_for('admin_dashboard'))
+                elif user.user_type == 'professeur':
+                    return redirect(url_for('professeurs'))
+                else:
+                    return redirect(url_for('etudiants'))
+
             else:
-                return redirect(url_for('etudiants'))
+                app.logger.warning(f"Échec authentification LDAP pour {email} : mot de passe incorrect")
+                flash('Mot de passe LDAP incorrect.', 'error')
+                return render_template('login.html', form=form)
+
         else:
-            app.logger.warning(f"Tentative de connexion échouée pour l'email : {form.email.data}")
-            flash('Email ou mot de passe incorrect.', 'error')
+            app.logger.info(f"Utilisateur {email} non trouvé en LDAP, tentative auth base locale...")
+
+            # Essaye auth locale si user existe dans BDD locale
+            user = User.query.filter_by(email=email).first()
+            if user and bcrypt.check_password_hash(user.password_hash, password):
+                session.clear()
+                session['user_id'] = user.id
+                session.permanent = form.remember_me.data
+
+                app.logger.info(f"Connexion réussie (base locale) : {email} ({user.user_type})")
+                flash(f'Bienvenue {user.prenom}!', 'success')
+
+                if user.user_type == 'admin':
+                    return redirect(url_for('admin_dashboard'))
+                elif user.user_type == 'professeur':
+                    return redirect(url_for('professeurs'))
+                else:
+                    return redirect(url_for('etudiants'))
+            else:
+                app.logger.warning(f"Tentative de connexion échouée pour l'email : {email}")
+                flash('Email ou mot de passe incorrect.', 'error')
 
     return render_template('login.html', form=form)
+
+
 
 @app.route('/logout')
 def logout():
@@ -341,9 +499,9 @@ def professeurs():
         flash('Vous devez être connecté pour accéder à cette page.', 'error')
         return redirect(url_for('login'))
 
-    if current_user.user_type != 'professeur':
+    if current_user.user_type not in ['professeur', 'admin']:
         app.logger.warning(f"Utilisateur non autorisé ({current_user.email}) a tenté d'accéder à /professeurs.")
-        flash('Accès réservé aux professeurs.', 'error')
+        flash('Accès réservé aux professeurs et admins.', 'error')
         return redirect(url_for('home'))
 
     app.logger.info(f"Page /professeurs visitée par : {current_user.email}")
@@ -359,13 +517,24 @@ def etudiants():
         flash('Vous devez être connecté pour accéder à cette page.', 'error')
         return redirect(url_for('login'))
 
-    if current_user.user_type != 'etudiant':
+    if current_user.user_type not in ['etudiant', 'admin']:
         app.logger.warning(f"Utilisateur non autorisé ({current_user.email}) a tenté d'accéder à /etudiants.")
-        flash('Accès réservé aux étudiants.', 'error')
+        flash('Accès réservé aux étudiants et admins.', 'error')
         return redirect(url_for('home'))
 
     app.logger.info(f"Page /etudiants visitée par : {current_user.email}")
     return render_template('etudiants.html', current_user=current_user)
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    current_user = get_current_user()
+
+    if not current_user or current_user.user_type != 'admin':
+        app.logger.warning(f"Accès non autorisé à /admin par {current_user.email if current_user else 'utilisateur non connecté'}")
+        flash('Accès réservé aux administrateurs.', 'error')
+        return redirect(url_for('home'))
+
+    return render_template('admin_dashboard.html', current_user=current_user)
 
 
 # Gestionnaire d'erreurs
@@ -386,7 +555,10 @@ def init_db():
             print("Base de données PostgreSQL initialisée avec succès !")
         except Exception as e:
             app.logger.error(f"Erreur lors de l'initialisation de la BDD : {e}")
+            print(repr(e))  # <-- ajoute ceci
             print("Échec de l'initialisation de la base de données.")
+
+
 
 
 if __name__ == '__main__':
