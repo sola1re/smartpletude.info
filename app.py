@@ -16,6 +16,7 @@ import bleach
 from wtforms.validators import Regexp
 from dotenv import load_dotenv
 from ldap3 import Server, Connection, ALL, NTLM
+from flask_wtf.csrf import CSRFProtect
 load_dotenv()
 
 # Initialize Flask app
@@ -39,6 +40,7 @@ LDAP_BASE_DN = os.environ.get('LDAP_BASE_DN')
 # Initialize extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+csrf = CSRFProtect(app)
 
 #Configuration du logger
 if not os.path.exists('logs'):

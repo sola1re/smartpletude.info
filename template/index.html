@@ -54,7 +54,7 @@
                 <p>La plateforme qui connecte les étudiants avec des professeurs qualifiés.</p>
                 
                 <form method="POST" action="{{ url_for('search') }}" class="search-form">
-                    {{ search_form.hidden_tag() }}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                     <label for="search-input" class="visually-hidden">Rechercher un cours</label>
                     <div class="search-bar">
                         <input type="text" id="search-input" name="query" placeholder="Rechercher un cours (ex: maths)">

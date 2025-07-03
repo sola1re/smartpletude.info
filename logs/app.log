@@ -1,1 +1,36 @@
 --start--
+2025-07-03 16:58:39,037 - INFO - Application démarrée
+2025-07-03 16:58:39,207 - ERROR - Erreur lors de l'initialisation de la BDD : 'utf-8' codec can't decode byte 0xe9 in position 97: invalid continuation byte
+2025-07-03 17:01:03,482 - INFO - Application démarrée
+2025-07-03 17:01:03,546 - ERROR - Erreur lors de l'initialisation de la BDD : 'utf-8' codec can't decode byte 0xe9 in position 97: invalid continuation byte
+2025-07-03 17:01:07,036 - ERROR - Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\app.py", line 2190, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\app.py", line 1486, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\app.py", line 1484, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\app.py", line 1469, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\app.py", line 289, in home
+    return render_template('index.html', current_user=current_user, search_form=search_form)
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\templating.py", line 151, in render_template
+    return _render(app, template, context)
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\flask\templating.py", line 132, in _render
+    rv = template.render(context)
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\jinja2\environment.py", line 1295, in render
+    self.environment.handle_exception()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\jinja2\environment.py", line 942, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\template\index.html", line 57, in top-level template code
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    ^^^^^
+  File "C:\Users\iampa\OneDrive\Documents\efrei\M1\PA8 - Smartpletude\smartpletude.info\.venv\Lib\site-packages\jinja2\utils.py", line 92, in from_obj
+    if hasattr(obj, "jinja_pass_arg"):
+       ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+jinja2.exceptions.UndefinedError: 'csrf_token' is undefined
+2025-07-03 17:03:12,359 - INFO - Application démarrée
+2025-07-03 17:03:12,420 - ERROR - Erreur lors de l'initialisation de la BDD : 'utf-8' codec can't decode byte 0xe9 in position 97: invalid continuation byte
