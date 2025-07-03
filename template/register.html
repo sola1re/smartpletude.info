@@ -16,6 +16,9 @@
                 <a href="{{ url_for('professeurs') }}">Professeurs</a>
                 <a href="{{ url_for('etudiants') }}">Étudiants</a>
                 <a href="{{ url_for('about') }}">À propos</a>
+		{% if current_user and current_user.user_type == 'admin' %}
+		    <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+		{% endif %}
             </nav>
             <div class="header-actions">
                 {% if current_user %}
