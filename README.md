@@ -1,4 +1,4 @@
-# 🎓 Smartpletude - Plateforme de cours particuliers
+# 🎓 Smartpletude (PA8)
 
 Une application web Flask simple et sécurisée pour mettre en relation professeurs et étudiants pour des cours particuliers.
 
@@ -19,46 +19,19 @@ Une application web Flask simple et sécurisée pour mettre en relation professe
 - **Interface différenciée** selon le type d'utilisateur
 - **Validation des formulaires** côté serveur
 - **Gestion d'erreurs** avec pages personnalisées
-- **Base de données SQLite** simple à déployer
+- **Base de données Postgresql** sur un server distant
 
 ## 🏗️ Architecture technique
 
 ### Stack technique
 - **Backend** : Flask 2.3.3 (Python)
-- **Base de données** : SQLite (par défaut) / PostgreSQL (optionnel)
+- **Base de données** : PostgreSQL / Possible avec MySQL
 - **ORM** : SQLAlchemy
 - **Authentification** : Flask-Bcrypt (hashage des mots de passe)
 - **Formulaires** : Flask-WTF + WTForms
 - **Templates** : Jinja2
 
-### Composants principaux
-
-#### 1. **app.py** - Application principale
-```python
-# Points clés de l'implémentation :
-- Configuration Flask simplifiée mais sécurisée
-- Modèle User avec champs essentiels
-- Routes protégées avec vérification de session
-- Hashage des mots de passe avec bcrypt (12 rounds)
-- Validation des formulaires côté serveur
-```
-
-#### 2. **db.py** - Gestionnaire de base de données
-```python
-# Fonctionnalités :
-- Initialisation automatique des tables
-- Création d'utilisateurs de test
-- Interface en ligne de commande interactive
-- Fonctions de maintenance (reset, stats)
-```
-
 ## 🚀 Installation
-
-### Prérequis
-- Python 3.8+ installé
-- pip (gestionnaire de paquets Python)
-
-### Étapes d'installation
 
 1. **Cloner le projet**
 ```bash
@@ -66,7 +39,7 @@ git clone <url-du-repo>
 cd smartpletude
 ```
 
-2. **Créer un environnement virtuel** (recommandé)
+2. **Créer un environnement virtuel**
 ```bash
 python -m venv venv
 
@@ -86,55 +59,14 @@ pip install -r requirements.txt
 ```bash
 python db.py
 ```
-Choisissez l'option 1 puis 2 pour initialiser et créer les utilisateurs de test.
 
 5. **Lancer l'application**
 ```bash
 python app.py
 ```
-
-L'application sera accessible sur : **http://127.0.0.1:5000**
-
-## 🖥️ Utilisation
-
-### Comptes de test
-Après avoir initialisé la base avec `db.py` :
-
-- **Professeur** : `prof@smartpletude.info` / `prof123`
-- **Étudiant** : `etudiant@smartpletude.info` / `etudiant123`
-
-### Navigation
-1. **Page d'accueil** : `/` - Présentation du site
-2. **Inscription** : `/register` - Création de compte
-3. **Connexion** : `/login` - Authentification
-4. **Espace professeur** : `/professeurs` - Interface dédiée aux profs
-5. **Espace étudiant** : `/etudiants` - Interface dédiée aux étudiants
-
-### Gestionnaire de base de données
+ou avec gunicorn pour un serveur en prod
 ```bash
-python db.py
-```
-Menu interactif pour gérer la bdd
-
-## 📁 Structure du projet
-
-```
-smartpletude/
-├── app.py                 # Application Flask principale
-├── db.py                  # Gestionnaire de base de données
-├── requirements.txt       # Dépendances Python
-├── .env                   # Configuration (optionnel)
-├── smartpletude.db       # Base de données SQLite (générée)
-├── template/             # Templates HTML
-│   ├── index.html
-│   ├── login.html
-│   ├── register.html
-│   ├── professeurs.html
-│   ├── etudiants.html
-│   ├── 404.html
-│   └── 500.html
-└── static/               # Fichiers statiques (CSS, JS, images)
-    └── style.css
+gunicorn -w 4 app:app
 ```
 
 ## 🗄️ Base de données
@@ -151,54 +83,3 @@ CREATE TABLE user (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 ```
-
-## 🔒 Sécurité
-
-### Mesures implémentées
-- **Hashage des mots de passe** : bcrypt avec 12 rounds
-- **Protection CSRF** : Flask-WTF automatique
-- **Validation des formulaires** : côté serveur avec WTForms
-- **Sessions sécurisées** : clé secrète aléatoire
-- **Validation des emails** : format et unicité
-- **Sanitisation des entrées** : strip() sur les champs texte
-
-### Bonnes pratiques
-- **Clé secrète** : Générez une clé unique en production
-- **HTTPS** : Activez en production
-- **Variables d'environnement** : Utilisez `.env` pour les secrets
-- **Logs** : Surveillez les tentatives de connexion
-
-## 🛠️ Développement
-
-### Commandes utiles
-```bash
-# Mode debug
-export FLASK_ENV=development  # Linux/Mac
-set FLASK_ENV=development     # Windows
-python app.py
-
-# Vérifier la base de données
-python db.py
-
-# Réinstaller les dépendances
-pip install -r requirements.txt --force-reinstall
-```
-
-### Ajouter de nouvelles fonctionnalités
-1. **Nouvelles routes** : Ajoutez dans `app.py`
-2. **Nouveaux champs** : Modifiez le modèle `User`
-3. **Nouveaux templates** : Créez dans `template/`
-4. **Styles** : Modifiez `static/style.css`
-
-### Debugging
-- **Logs** : `print()` statements dans les routes
-- **Base de données** : Utilisez `python db.py` option 3
-- **Sessions** : Vérifiez dans les outils développeur du navigateur
-
-## 📞 Support
-
-En cas de problème :
-1. Vérifiez que toutes les dépendances sont installées
-2. Assurez-vous que la base de données est initialisée
-3. Consultez les logs d'erreur Flask
-4. Utilisez `python db.py` pour diagnostiquer la base
