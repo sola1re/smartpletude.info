@@ -1,6 +1,6 @@
 # 🎓 Smartpletude (PA8)
 
-Une application web Flask simple et sécurisée pour mettre en relation professeurs et étudiants pour des cours particuliers.
+Une web-app en Flask, simple et sécurisée pour mettre en relation professeurs et étudiants pour des cours particuliers.
 
 ## 📋 Table des matières
 
@@ -11,15 +11,6 @@ Une application web Flask simple et sécurisée pour mettre en relation professe
 - [Structure du projet](#-structure-du-projet)
 - [Base de données](#-base-de-données)
 - [Sécurité](#-sécurité)
-
-## ✨ Fonctionnalités
-
-- **Inscription/Connexion** sécurisée pour professeurs et étudiants
-- **Gestion des sessions** avec option "Se souvenir de moi"
-- **Interface différenciée** selon le type d'utilisateur
-- **Validation des formulaires** côté serveur
-- **Gestion d'erreurs** avec pages personnalisées
-- **Base de données Postgresql** sur un server distant
 
 ## 🏗️ Architecture technique
 
