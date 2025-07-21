@@ -2,16 +2,6 @@
 
 Une web-app en Flask, simple et sécurisée pour mettre en relation professeurs et étudiants pour des cours particuliers.
 
-## 📋 Table des matières
-
-- [Fonctionnalités](#-fonctionnalités)
-- [Architecture technique](#-architecture-technique)
-- [Installation](#-installation)
-- [Utilisation](#-utilisation)
-- [Structure du projet](#-structure-du-projet)
-- [Base de données](#-base-de-données)
-- [Sécurité](#-sécurité)
-
 ## 🏗️ Architecture technique
 
 ### Stack technique
